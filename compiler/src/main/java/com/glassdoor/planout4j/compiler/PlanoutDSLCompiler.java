@@ -62,20 +62,9 @@ public class PlanoutDSLCompiler {
             final Object json = engine.get("output");
             checkState(json instanceof Map, "Expected compiled object to be an instance of Map, but it is %s",
                     Helper.getClassName(json));
-            return Helper.deepCopy((Map<String, ?>)json, getDetector());
+            return Helper.deepCopy((Map<String, ?>)json, GraalJsCollectionDetector.INSTANCE);
         } catch (Exception e) {
             throw new ValidationException("Failed to compile DSL:\n" + dsl, e);
         }
     }
-
-    private static CollectionDetector getDetector() {
-        if (GraalJsCollectionDetector.INSTANCE.isSupported()) {
-            return GraalJsCollectionDetector.INSTANCE;
-        }
-        if (NashornJsCollectionDetector.INSTANCE.isSupported()) {
-            return NashornJsCollectionDetector.INSTANCE;
-        }
-        return CollectionDetector.DEFAULT;
-    }
-
 }
