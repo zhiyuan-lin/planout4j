@@ -15,7 +15,7 @@ public class PlanoutDSLCompilerTest {
     public void test_dsl_to_json() throws Exception {
         Map<String, ?>  tests = Map.of(
                 "x = 2;",
-                Map.of("op", "set", "var", "x", "value", 2.0),
+                Map.of("op", "set", "var", "x", "value", 2),
                 "return bernoulliTrial(0.1)",
                 Map.of("op", "return", "value", Map.of("value", 0.1, "op", "bernoulliTrial"))
         );

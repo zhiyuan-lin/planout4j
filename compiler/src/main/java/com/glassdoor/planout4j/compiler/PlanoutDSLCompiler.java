@@ -2,6 +2,9 @@ package com.glassdoor.planout4j.compiler;
 
 import java.io.IOException;
 import java.util.Map;
+
+import javax.script.Bindings;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
@@ -51,6 +54,8 @@ public class PlanoutDSLCompiler {
     public static Map<String, ?> dsl_to_json(final String dsl) throws ValidationException {
         checkArgument(StringUtils.isNotEmpty(dsl), "dsl text is null or empty");
         final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+        Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+        bindings.put("polyglot.js.nashorn-compat", true);
         engine.put("input", dsl);
         try {
             engine.eval(script);
