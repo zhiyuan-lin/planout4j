@@ -6,6 +6,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.glassdoor.planout4j.util.CollectionDetector;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
@@ -55,10 +57,20 @@ public class PlanoutDSLCompiler {
             final Object json = engine.get("output");
             checkState(json instanceof Map, "Expected compiled object to be an instance of Map, but it is %s",
                     Helper.getClassName(json));
-            return Helper.deepCopy((Map<String, ?>)json, JSCollectionDetector.get());
+            return Helper.deepCopy((Map<String, ?>)json, getDetector());
         } catch (Exception e) {
             throw new ValidationException("Failed to compile DSL:\n" + dsl, e);
         }
+    }
+
+    private static CollectionDetector getDetector() {
+        if (GraalJsCollectionDetector.INSTANCE.isSupported()) {
+            return GraalJsCollectionDetector.INSTANCE;
+        }
+        if (NashornJsCollectionDetector.INSTANCE.isSupported()) {
+            return NashornJsCollectionDetector.INSTANCE;
+        }
+        return CollectionDetector.DEFAULT;
     }
 
 }
