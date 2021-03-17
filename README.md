@@ -1,7 +1,7 @@
 ### NOTE 
 This repo is not being maintained any longer. There is active fork at https://github.com/nkconnor/planout4j
 
-[![Build Status](https://travis-ci.org/zhiyuan-lin/planout4j.svg?branch=master)](https://travis-ci.org/zhiyuan-lin/planout4j)
+[![Build Status](https://github.com/zhiyuan-lin/planout4j/actions/workflows/maven.yml/badge.svg)](https://github.com/zhiyuan-lin/planout4j/actions/workflows/maven.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.glassdoor.planout4j/planout4j-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.glassdoor.planout4j/planout4j-core)
 
 # PlanOut4J
