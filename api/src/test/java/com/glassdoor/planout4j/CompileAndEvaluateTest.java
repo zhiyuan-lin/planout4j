@@ -30,9 +30,9 @@ public class CompileAndEvaluateTest {
     @Test
     public void testCanUseImmutableCompilerOutput() throws Exception {
         Map<String, ?> code = Helper.deepCopy(PlanoutDSLCompiler.dsl_to_json("x = 2;"), null);
-        assertEquals(Map.of("x", 2.0), new Interpreter(code, "salt", Collections.EMPTY_MAP, Collections.EMPTY_MAP).getParams());
+        assertEquals(Map.of("x", 2), new Interpreter(code, "salt", Collections.EMPTY_MAP, Collections.EMPTY_MAP).getParams());
         code = Helper.deepCopy(PlanoutDSLCompiler.dsl_to_json("x = [1,2];"), null);
-        assertEquals(Map.of("x", List.of(1.0, 2.0)), new Interpreter(code, "salt", Collections.EMPTY_MAP, Collections.EMPTY_MAP).getParams());
+        assertEquals(Map.of("x", List.of(1, 2)), new Interpreter(code, "salt", Collections.EMPTY_MAP, Collections.EMPTY_MAP).getParams());
     }
 
     @Test
