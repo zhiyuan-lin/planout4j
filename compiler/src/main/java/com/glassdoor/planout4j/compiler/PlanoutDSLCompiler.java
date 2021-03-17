@@ -2,10 +2,15 @@ package com.glassdoor.planout4j.compiler;
 
 import java.io.IOException;
 import java.util.Map;
+
+import javax.script.Bindings;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.glassdoor.planout4j.util.CollectionDetector;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
@@ -49,16 +54,17 @@ public class PlanoutDSLCompiler {
     public static Map<String, ?> dsl_to_json(final String dsl) throws ValidationException {
         checkArgument(StringUtils.isNotEmpty(dsl), "dsl text is null or empty");
         final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+        Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+        bindings.put("polyglot.js.nashorn-compat", true);
         engine.put("input", dsl);
         try {
             engine.eval(script);
             final Object json = engine.get("output");
             checkState(json instanceof Map, "Expected compiled object to be an instance of Map, but it is %s",
                     Helper.getClassName(json));
-            return Helper.deepCopy((Map<String, ?>)json, JSCollectionDetector.get());
+            return Helper.deepCopy((Map<String, ?>)json, GraalJsCollectionDetector.INSTANCE);
         } catch (Exception e) {
             throw new ValidationException("Failed to compile DSL:\n" + dsl, e);
         }
     }
-
 }
